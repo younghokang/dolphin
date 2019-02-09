@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link th:href="@{/css/signin.css}" rel="stylesheet" />
+    <title>Login</title>
+  </head>
+  <body class="text-center">
+  	<form class="form-signin">
+	  <img class="mb-4" th:src="@{/images/dolphin-310084_140.png}" alt="Black Dolphin Logo" width="72" height="72" />
+	  <h1 class="h3 mb-3 font-weight-normal">Dolphin</h1>
+	  <a th:href="@{/login/naver}" class="btn btn-lg btn-block text-hide" style="background-image: url('/images/naver_login_icon_green_300.png'); height:65px;">Naver Login</a>
+	</form>
+  </body>
+</html>

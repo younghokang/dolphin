@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/simulator/default}">
+<head>
+  <title>Simulator</title>
+</head>
+<body>
+    <div layout:fragment="content">
+      
+      <div class="row">
+      	<div class="col-md-12">
+      		<a th:href="@{/simulator/nextTurn}" class="btn btn-outline-dark btn-block" th:text="${#temporals.format(member.current, 'yyyy년 MM월 dd일')}">2019년 1월 15일 12시 30분</a>
+			<hr />
+      	</div>
+      </div>
+      <div class="row">
+      	<div class="col-md-12" th:if="${not #lists.isEmpty(savingAccounts)}">
+      		<div class="card">
+      			<div class="card-header">
+      				적금
+      			</div>
+      			<div class="card-body text-center">
+		      		<dl class="row" th:each="account, accountStat : ${savingAccounts}">
+		      			<dt class="col-md-3">은행</dt>
+		      			<dd class="col-md-9" th:text="${account.product.companyName}">KB국민은행</dd>
+		      			<dt class="col-md-3">상품명</dt>
+		      			<dd class="col-md-9" th:text="${account.product.name}">정기적금</dd>
+		      			<dt class="col-md-3">잔액</dt>
+		      			<dd class="col-md-9" th:text="${#numbers.formatCurrency(account.getTotalAmountOfBalance())}">30,000,000원</dd>
+		      			<dt class="col-md-3">예상 이자(세전<span th:text="${#numbers.formatPercent(account.contract.interestRate, 1, 2)}">2.5%</span>)</dt>
+		      			<dd class="col-md-9" th:text="${#numbers.formatCurrency(account.product.interestBeforeTax)}">15,000원</dd>
+		      			<dt class="col-md-3">남은 기간(일)</dt>
+		      			<dd class="col-md-9">
+		      				<div class="progress">
+							  <div class="progress-bar bg-info" role="progressbar" th:style="'width: ' + ${account.getNumberOfPercentToExpiry()} + '%;'" th:text="'D-' + ${account.getDayOfExpiryFromCurrent()}">25%</div>
+							</div>
+		      			</dd>
+		      			<dt class="col-md-3"></dt>
+		      			<dd class="col-md-9">
+		      				<table class="table table-sm">
+		      				<thead class="thead-light">
+		      				<tr>
+		      					<th scope="col">회차</th>
+		      					<th scope="col">금액</th>
+		      					<th scope="col">입금일자</th>
+		      				</tr>
+		      				</thead>
+		      				<tbody>
+		      				<tr th:each="detail, detailStat : ${account.accountDetails}">
+		      					<td th:text="${#numbers.formatInteger(detail.turn, 3, 'COMMA')}">1</td>
+		      					<td th:text="${#numbers.formatCurrency(detail.balance)}">100,000원</td>
+		      					<td th:text="${#temporals.format(detail.depositDate, 'yyyy-MM-dd')}">2019-01-01</td>
+		      				</tr>
+		      				</tbody>
+		      				</table>
+		      			</dd>
+		      			<dt class="col-md-12" th:if="${member.current eq account.contract.expiryDate}">
+		      				<a th:href="@{/simulator/closeAccount}" class="btn btn-outline-danger btn-block">만기 해지</a>
+		      			</dt>
+		      		</dl>
+      			</div>
+      		</div>
+      	</div>
+      </div>
+      <div class="row">
+      	<div class="col-md-12" th:if="${not #lists.isEmpty(depositAccounts)}">
+      		<hr/>
+      		<div class="card">
+      			<div class="card-header">
+      				예금
+      			</div>
+      			<div class="card-body text-center">
+		      		<dl class="row" th:each="account, accountStat : ${depositAccounts}">
+		      			<dt class="col-md-3">은행</dt>
+		      			<dd class="col-md-9" th:text="${account.product.companyName}">KB국민은행</dd>
+		      			<dt class="col-md-3">상품명</dt>
+		      			<dd class="col-md-9" th:text="${account.product.name}">정기적금</dd>
+		      			<dt class="col-md-3">잔액</dt>
+		      			<dd class="col-md-9" th:text="${#numbers.formatCurrency(account.getTotalAmountOfBalance())}">30,000,000원</dd>
+		      			<dt class="col-md-3">예상 이자(세전<span th:text="${#numbers.formatPercent(account.contract.interestRate, 1, 2)}">2.5%</span>)</dt>
+		      			<dd class="col-md-9" th:text="${#numbers.formatCurrency(account.product.interestBeforeTax)}">15,000원</dd>
+		      			<dt class="col-md-3">남은 기간(일)</dt>
+		      			<dd class="col-md-9">
+		      				<div class="progress">
+							  <div class="progress-bar bg-success" role="progressbar" th:style="'width: ' + ${account.getNumberOfPercentToExpiry()} + '%;'" th:text="'D-' + ${account.getDayOfExpiryFromCurrent()}">25%</div>
+							</div>
+		      			</dd>
+		      			<dt class="col-md-3"></dt>
+		      			<dd class="col-md-9">
+		      				<table class="table table-sm">
+		      				<thead class="thead-light">
+		      				<tr>
+		      					<th scope="col">회차</th>
+		      					<th scope="col">금액</th>
+		      					<th scope="col">입금일자</th>
+		      				</tr>
+		      				</thead>
+		      				<tbody>
+		      				<tr th:each="detail, detailStat : ${account.accountDetails}">
+		      					<td th:text="${#numbers.formatInteger(detail.turn, 3, 'COMMA')}">1</td>
+		      					<td th:text="${#numbers.formatCurrency(detail.balance)}">100,000원</td>
+		      					<td th:text="${#temporals.format(detail.depositDate, 'yyyy-MM-dd')}">2019-01-01</td>
+		      				</tr>
+		      				</tbody>
+		      				</table>
+		      			</dd>
+		      			<dt class="col-md-12" th:if="${member.current eq account.contract.expiryDate}">
+		      				<a th:href="@{/simulator/closeAccount}" class="btn btn-outline-danger btn-block">만기 해지</a>
+		      			</dt>
+		      			<dd class="col-md-12">
+		      				<hr />
+		      			</dd>
+		      		</dl>
+      			</div>
+      		</div>
+      		<br />
+      	</div>
+      </div>
+      
+    </div>
+</body>
+</html>
