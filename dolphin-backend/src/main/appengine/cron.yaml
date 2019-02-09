@@ -1,0 +1,16 @@
+cron:
+- description: "금융감독원 금융상품통합비교공시 OPEN API(적금 API)"
+  url: /api/fss/scheduler/saving
+  schedule: every monday,tuesday,wednesday,thursday,friday of month 10:00
+  timezone: Asia/Seoul
+  target: dolphin-backend
+- description: "금융감독원 금융상품통합비교공시 OPEN API(정기예금 API)"
+  url: /api/fss/scheduler/deposit
+  schedule: every monday,tuesday,wednesday,thursday,friday of month 08:00
+  timezone: Asia/Seoul
+  target: dolphin-backend
+- description: "금융감독원 금융상품통합비교공시 OPEN API(금융회사 API)"
+  url: /api/fss/scheduler/company
+  schedule: every monday,tuesday,wednesday,thursday,friday of month 09:00
+  timezone: Asia/Seoul
+  target: dolphin-backend

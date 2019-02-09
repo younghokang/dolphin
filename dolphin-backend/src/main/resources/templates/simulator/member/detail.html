@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/default}">
+<head>
+  <title>Member</title>
+</head>
+<body>
+    <div layout:fragment="content">
+    	<nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/simulator}">Simulator</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Member</li>
+          </ol>
+        </nav>
+        
+        <div class="row">
+    	  <div class="col-md-12">
+    	  	<div class="card">
+    	  		<div class="card-body">
+		    	  	<dl class="row">
+		    	  		<dt class="col-sm-3">ID:</dt>
+		    	  		<dd class="col-sm-9" th:text="${memberCommand.id}">12</dd>
+		    	  		<dt class="col-sm-3">고유번호:</dt>
+		    	  		<dd class="col-sm-9" th:text="${memberCommand.username}">12431835134</dd>
+		    	  		<dt class="col-sm-3">소셜유형:</dt>
+		    	  		<dd class="col-sm-9" th:text="${memberCommand.socialType}">Naver</dd>
+		    	  		<dt class="col-sm-3">e-mail:</dt>
+		    	  		<dd class="col-sm-9" th:text="${memberCommand.email}">afraid86@gmail.com</dd>
+		    	  		<dt class="col-sm-3">시뮬레이터 - 시간:</dt>
+		    	  		<dd class="col-sm-9" th:text="${memberCommand.current}">2019-01-01</dd>
+		    	  		<dt class="col-sm-3">가입일:</dt>
+		    	  		<dd class="col-sm-9" th:text="${#temporals.format(memberCommand.createdDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01</dd>
+		    	  		<dt class="col-sm-3">최종 수정일:</dt>
+		    	  		<dd class="col-sm-9" th:text="${#temporals.format(memberCommand.lastModifiedDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01</dd>
+		    	  	</dl>
+    	  		</div>
+    	  	</div>
+    	  </div>
+    	</div>
+    </div>
+</body>
+</html>

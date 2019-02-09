@@ -1,0 +1,62 @@
+api:
+  fss:
+    key: key
+spring:
+  profiles:
+    active: production
+---
+spring:
+  profiles: development
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    name: database
+    url: jdbc:mysql://localhost:3306/database
+    username: username
+    password: password
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        use_sql_comments: true
+        type: trace
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+logging:
+  level:
+    org.springframework.security: DEBUG
+    web: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+---
+spring:
+  profiles: production
+  devtools:
+    add-properties: false
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    name: database
+    url: jdbc:mysql://host
+    username: username
+    password: password
+  jpa:
+    open-in-view: false
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        use_sql_comments: false
+        type: trace
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false
+logging:
+  level:
+    org.springframework.security: INFO
+    web: INFO
+    org.hibernate.type.descriptor.sql: INFO
+    

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/default}">
+<head>
+  <title>User</title>
+</head>
+<body>
+    <div layout:fragment="content">
+    	<div class="alert alert-primary" role="alert" th:if="${!#strings.isEmpty(message)}" th:text="#{${message}}">message</div>
+    	
+    	<nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/manager}">Manager</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User</li>
+          </ol>
+        </nav>
+      
+    	<div class="row">
+    		<div class="col-md-12">
+    			<a class="btn btn-outline-info btn-block mb-3" th:href="@{/manager/user/create}">New User</a>
+    			<table class="table text-center">
+    			<caption>관리자 목록</caption>
+    			<thead class="thead-dark">
+    			<tr>
+    				<th scope="col">#</th>
+    				<th scope="col">아이디</th>
+    				<th scope="col">생성일</th>
+    				<th scope="col">최종 수정일</th>
+    			</tr>
+    			</thead>
+    			<tbody>
+    			<tr th:each="user, userStat : ${list}">
+    				<td th:text="${userStat.count}">15</td>
+    				<td class="text-left">
+    					<a class="btn btn-info btn-sm" th:href="@{/manager/user/{username}(username=${user.username})}" th:text="${user.username}">afraid86</a>
+    				</td>
+    				<td th:text="${#temporals.format(user.createdDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01 15:30:30</td>
+    				<td th:text="${#temporals.format(user.lastModifiedDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01 15:30:30</td>
+    			</tr>
+    			</tbody>
+    			</table>
+    			<nav aria-label="Page navigation">
+  					<ul class="pagination justify-content-center">
+    					<li th:class="'page-item ' + ${list.first ? 'disabled' : ''}">
+      						<a class="page-link" th:href="@{/manager/user/list}" tabindex="-1" th:aria-disabled="${list.first ? 'true' : 'false'}">First</a>
+    					</li>
+					    <li th:class="'page-item '  + ${list.number == idx ? 'disabled' : ''}" th:each="idx : ${#numbers.sequence(0, list.totalPages - 1)}">
+					    	<a class="page-link" th:href="@{/manager/user/list(page=${idx})}" th:text="${idx + 1}">1</a>
+					    </li>
+					    <li th:class="'page-item ' + ${list.last ? 'disabled' : ''}">
+      						<a class="page-link" th:href="@{/manager/user/list(page=${list.totalPages - 1})}">Last</a>
+    					</li>
+  					</ul>
+				</nav>
+    		</div>
+    	</div>
+    </div>
+</body>
+</html>

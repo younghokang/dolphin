@@ -1,0 +1,62 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+    <title>Dolphin-Backend</title>
+  </head>
+  <body>
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+      <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Dolphin Backend</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li th:class="${#strings.startsWith(#httpServletRequest.requestURI, '/manager')}? 'nav-item active dropdown' : 'nav-item dropdown'">
+              <a class="nav-link dropdown-toggle" th:href="@{/manager/user/list}" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manager</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown06">
+              	<a class="dropdown-item" th:href="@{/manager/user/list}">관리자 목록</a>
+              	<a class="dropdown-item" th:href="@{/manager/comment/list}">댓글 목록</a>
+              </div>
+            </li>
+            <li th:class="${#strings.startsWith(#httpServletRequest.requestURI, '/simulator')} ? 'nav-item active dropdown' : 'nav-item dropdown'">
+              <a class="nav-link dropdown-toggle" th:href="@{/simulator/company/list}" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Simulator</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown07">
+                <a class="dropdown-item" th:href="@{/simulator/company/list}">금융회사 목록</a>
+                <a class="dropdown-item" th:href="@{/simulator/product/list}">금융상품 목록</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" th:href="@{/simulator/member/list}">회원 목록</a>
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-md-0" th:action="@{/logout}" th:method="post" sec:authorize="isAuthenticated()">
+            <button type="submit" class="btn btn-outline-light">Logout</button> 
+          </form>
+        </div>
+      </div>
+    </nav>
+  
+    <div role="main" class="container" layout:fragment="content"></div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <div layout:fragment="javascript"></div>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/default}">
+<head>
+  <title>Company</title>
+</head>
+<body>
+    <div layout:fragment="content">
+    	<div class="alert alert-primary" role="alert" th:if="${!#strings.isEmpty(message)}" th:text="#{${message}}">message</div>
+    	
+    	<nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/simulator}">Simulator</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Company</li>
+          </ol>
+        </nav>
+      
+    	<div class="row">
+    		<div class="col-md-12">
+          	<form th:action="@{/simulator/company/list}" th:object="${financeCompanyCommand}" th:method="get">
+            <div class="form-group row">
+              <label for="name" class="col-sm-2 col-form-label">회사명</label>
+              <div class="col-sm-10">
+	              <input type="text" class="form-control" th:field="*{name}" th:errorclass="is-invalid" />
+	              <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">회사명을 올바르게 입력해주세요.</div>
+              </div> 
+            </div>
+            <div class="form-group row">
+              <label for="code" class="col-sm-2 col-form-label">회사코드</label>
+              <div class="col-sm-10">
+	              <input type="text" class="form-control" th:field="*{code}" th:errorclass="is-invalid" />
+	              <div class="invalid-feedback" th:if="${#fields.hasErrors('code')}" th:errors="*{code}">회사코드를 올바르게 입력해주세요.</div>
+              </div>
+            </div>
+            <fieldset class="form-group">
+              <div class="row">
+            	<legend class="col-form-label col-sm-2 pt-0">금융권</legend>
+            	<div class="col-sm-10">
+            	  <div class="form-check form-check-inline" th:each="fg : ${allFinanceGroups}">
+              		<input class="form-check-input" type="radio" th:field="*{financeGroup}" th:value="${fg}" />
+              		<label th:for="${#ids.prev('financeGroup')}" th:text="#{|FinanceGroup.${fg}|}">은행</label>
+              	  </div>
+            	</div>
+              </div>
+            </fieldset>
+            <fieldset class="form-group">
+              <div class="row">
+            	<legend class="col-form-label col-sm-2 pt-0">검수상태</legend>
+            	<div class="col-sm-10">
+            	  <div class="form-check form-check-inline" th:each="ts : ${allTestStates}">
+              		<input class="form-check-input" type="radio" th:field="*{testState}" th:value="${ts}" />
+              		<label th:for="${#ids.prev('testState')}" th:text="#{|TestState.${ts}|}">검수전</label>
+              	  </div>
+            	</div>
+              </div>
+            </fieldset>
+            <div class="form-group row">
+            	<label class="col-sm-8"></label>
+            	<div class="col-sm-2">
+            	  <a class="btn btn-outline-info btn-block" th:href="@{/simulator/company/list}">Reset</a>
+            	</div>
+            	<div class="col-sm-2">
+	              <button class="btn btn-outline-success btn-block" type="submit">Search</button>
+            	</div>
+            </div>
+            <hr class="mb-4" />
+          	</form>
+          
+    			<table class="table text-center">
+    			<caption>금융회사 목록</caption>
+    			<thead class="thead-dark">
+    			<tr>
+    				<th scope="col">#</th>
+    				<th scope="col">금융권</th>
+    				<th scope="col">회사명</th>
+    				<th scope="col">검수상태</th>
+    				<th scope="col">최종 수정일</th>
+    			</tr>
+    			</thead>
+    			<tbody>
+    			<tr th:each="company, companyStat : ${list}">
+    				<td th:text="${company.id}">15</td>
+    				<td th:text="#{|FinanceGroup.${company.financeGroup}|}">저축은행</td>
+    				<td class="text-left">
+    					<a class="btn btn-info btn-sm" th:href="@{/simulator/company/{id}(id=${company.id})}" th:text="${company.name}">KB국민은행</a>
+    				</td>
+    				<td th:text="#{|TestState.${company.testState}|}">검수전</td>
+    				<td th:text="${#temporals.format(company.lastModifiedDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01 15:30:30</td>
+    			</tr>
+    			</tbody>
+    			</table>
+    			<nav aria-label="Page navigation">
+  					<ul class="pagination justify-content-center">
+    					<li th:class="'page-item ' + ${list.first ? 'disabled' : ''}">
+      						<a class="page-link" th:href="@{/simulator/company/list}" tabindex="-1" th:aria-disabled="${list.first ? 'true' : 'false'}">First</a>
+    					</li>
+					    <li th:class="'page-item '  + ${list.number == idx ? 'disabled' : ''}" th:each="idx : ${#numbers.sequence(0, list.totalPages - 1)}">
+					    	<a class="page-link" th:href="@{/simulator/company/list(page=${idx})}" th:text="${idx + 1}">1</a>
+					    </li>
+					    <li th:class="'page-item ' + ${list.last ? 'disabled' : ''}">
+      						<a class="page-link" th:href="@{/simulator/company/list(page=${list.totalPages - 1})}">Last</a>
+    					</li>
+  					</ul>
+				</nav>
+    		</div>
+    	</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/default}">
+<head>
+  <title>Product</title>
+</head>
+<body>
+    <div layout:fragment="content">
+    	<nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/simulator}">Simulator</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Product</li>
+          </ol>
+        </nav>
+        
+        <div class="row">
+    	  <div class="col-md-12">
+    	    <form th:action="@{/simulator/product/{id}(id=*{id})}" th:object="${productCommand}" th:method="post">
+    	      <div class="form-group">
+    	      	  <label for="name">상품명</label>
+    	      	  <input type="text" th:field="*{name}" class="form-control" placeholder="상품명을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">상품명을 입력해주세요.</div>
+    	      </div>
+    	      <div class="form-row">
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="financeGroup">금융권</label>
+    	      	  <select th:field="*{financeGroup}" class="form-control">
+    	      	  <option th:each="fg : ${allFinanceGroups}" th:value="${fg}" th:text="#{|FinanceGroup.${fg}|}"></option>
+    	      	  </select>
+    	      	</div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="companyName">회사명</label>
+    	      	  <input type="text" th:field="*{companyName}" class="form-control" placeholder="회사명을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">회사명을 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="code">상품코드</label>
+    	      	  <input type="text" th:field="*{code}" class="form-control" placeholder="상품코드명을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('code')}" th:errors="*{code}">상품코드명을 입력해주세요.</div>
+    	      	</div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="disclosureMonth">공시년월(YYYYMM)</label>
+    	      	  <input type="text" th:field="*{disclosureMonth}" class="form-control" placeholder="공시년월(YYYYMM)을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('disclosureMonth')}" th:errors="*{disclosureMonth}">공시년월(YYYYMM)을 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="joinWay">가입방법</label>
+    	      	  <textarea class="form-control" th:field="*{joinWay}" placeholder="가입방법을 입력하세요." th:errorclass="is-invalid"></textarea>
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('joinWay')}" th:errors="*{joinWay}">가입방법을 입력해주세요.</div>
+    	      	</div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="maturityInterest">만기 후 이자지급 방식</label>
+    	      	  <textarea class="form-control" th:field="*{maturityInterest}" placeholder="만기 후 이자지급 방식을 입력하세요." th:errorclass="is-invalid"></textarea>
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('maturityInterest')}" th:errors="*{maturityInterest}">만기 후 이자지급 방식을 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="specialCondition">우대조건</label>
+    	      	  <textarea class="form-control" th:field="*{specialCondition}" placeholder="우대조건을 입력하세요." th:errorclass="is-invalid"></textarea>
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('specialCondition')}" th:errors="*{specialCondition}">우대조건을 입력해주세요.</div>
+    	      	</div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="joinMember">가입대상</label>
+    	      	  <textarea class="form-control" th:field="*{joinMember}" placeholder="가입대상을 입력하세요." th:errorclass="is-invalid"></textarea>
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('joinMember')}" th:errors="*{joinMember}">가입대상을 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="form-group col-md-6">
+    	          <label for="joinDeny">가입제한</label>
+    	          <select th:field="*{joinDeny}" class="form-control">
+    	          <option th:each="jd : ${allJoinDenies}" th:value="${jd}" th:text="#{|joinDeny.${jd}|}"></option>
+    	          </select>
+    	        </div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="testState">검수상태</label>
+    	      	  <select th:field="*{testState}" class="form-control">
+    	      	  <option th:each="ts : ${allTestStates}" th:value="${ts}" th:text="#{|TestState.${ts}|}"></option>
+    	      	  </select>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="form-group col-md-6">
+    	          <label for="etcNote">기타 유의사항</label>
+    	          <textarea class="form-control" th:field="*{etcNote}" placeholder="기타 유의사항을 입력하세요." th:errorclass="is-invalid"></textarea>
+    	          <div class="invalid-feedback" th:if="${#fields.hasErrors('etcNote')}" th:errors="*{etcNote}">기타 유의사항을 입력해주세요.</div>
+    	        </div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="periodUnit">가입기간 단위</label>
+    	          <select th:field="*{periodUnit}" class="form-control">
+    	          <option th:each="pu : ${allPeriodUnits}" th:value="${#strings.toUpperCase(pu)}" th:text="#{|PeriodUnit.${pu}|}"></option>
+    	          </select>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="form-group col-md-6">
+    	          <label for="minAge">최소가입나이</label>
+    	          <input type="number" th:field="*{minAge}" class="form-control" placeholder="최소가입나이를 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('minAge')}" th:errors="*{minAge}">최소가입나이를 입력해주세요.</div>
+    	        </div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="maxAge">최대가입나이</label>
+    	      	  <input type="number" th:field="*{maxAge}" class="form-control" placeholder="최대가입나이를 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('maxAge')}" th:errors="*{maxAge}">최대가입나이를 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="form-group col-md-6">
+    	          <label for="minPeriod">최소가입기간</label>
+    	          <input type="number" th:field="*{minPeriod}" class="form-control" placeholder="최소가입기간을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('minPeriod')}" th:errors="*{minPeriod}">최소가입기간을 입력해주세요.</div>
+    	        </div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="maxPeriod">최대가입기간</label>
+    	      	  <input type="number" th:field="*{maxPeriod}" class="form-control" placeholder="최대가입기간을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('maxPeriod')}" th:errors="*{maxPeriod}">최대가입기간을 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="form-group col-md-6">
+    	          <label for="minBalance">최소가입금액</label>
+    	          <input type="number" th:field="*{minBalance}" class="form-control" placeholder="최소가입금액을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('minBalance')}" th:errors="*{minBalance}">최소가입금액을 입력해주세요.</div>
+    	        </div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="maxBalance">최대가입금액</label>
+    	      	  <input type="number" th:field="*{maxBalance}" class="form-control" placeholder="최대가입금액을 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('maxBalance')}" th:errors="*{maxBalance}">최대가입금액을 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="col-md-6">
+	    	      <div class="form-group form-check">
+	    	        <input type="checkbox" th:field="*{depositProtect}" class="form-check-input" th:value="true" />
+	    	        <label class="form-check-label" th:for="${#ids.prev('depositProtect')}">예금자보호상품</label>
+	    	      </div>
+    	        </div>
+    	        <div class="col-md-6">
+	    	      <div class="form-group form-check">
+	    	        <input type="checkbox" th:field="*{nonTaxable}" class="form-check-input" th:value="true" />
+	    	        <label class="form-check-label" th:for="${#ids.prev('nonTaxable')}">비과세저축상품</label>
+	    	      </div>
+    	        </div>
+    	      </div>
+    	      <div class="form-row">
+    	        <div class="form-group col-md-6">
+    	          <label for="interestPaymentType">이자지급방식</label>
+    	          <select th:field="*{interestPaymentType}" class="form-control">
+    	          <option th:each="ipt : ${allInterestPaymentTypes}" th:value="${ipt}" th:text="#{|InterestPaymentType.${ipt}|}"></option>
+    	          </select>
+    	        </div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="state">상품운영상태</label>
+    	      	  <select th:field="*{state}" class="form-control">
+    	      	  <option th:each="st : ${allStates}" th:value="${st}" th:text="#{|ProductState.${st}|}"></option>
+    	      	  </select>
+    	      	</div>
+    	      </div>
+    	      <ul class="list-group">
+    	      	<li class="list-group-item" th:each="option : *{productOptions}">
+    	      		<table class="table">
+    	      		<caption><span th:text="#{|interestRateType.${option.interestRateType}|}">단리</span> | <span th:text="#{|reserveType.${option.reserveType}|}">정액적립식</span></caption>
+    	      		<thead>
+    	      		<tr>
+    	      			<th scope="col">가입기간</th>
+    	      			<th scope="col">금리</th>
+    	      			<th scope="col">우대금리</th>
+    	      		</tr>
+    	      		</thead>
+    	      		<tbody>
+    	      		<tr th:each="ir : ${option.interestRates}">
+    	      			<td><span th:text="${ir.contractPeriod}">12</span>개월</td>
+    	      			<td th:text="${#numbers.formatPercent(ir.rate, 1, 2)}">2.50%</td>
+    	      			<td th:text="${#numbers.formatPercent(ir.primeRate, 1, 2)}">2.60%</td>
+    	      		</tr>
+    	      		</tbody>
+    	      		</table>
+    	      	</li>
+    	      </ul>
+    	      <button type="submit" class="btn btn-primary btn-block">Save changes</button>  
+    	    </form>
+    	  </div>
+    	</div>
+    </div>
+</body>
+</html>

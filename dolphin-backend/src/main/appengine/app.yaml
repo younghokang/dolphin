@@ -1,0 +1,9 @@
+runtime: java
+env: flex
+threadsafe: true
+service: dolphin-backend
+resources:
+  cpu: 1
+  memory_gb: 1.5
+manual_scaling:
+  instances: 1

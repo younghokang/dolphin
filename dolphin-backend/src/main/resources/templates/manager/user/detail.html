@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/default}">
+<head>
+  <title>User</title>
+</head>
+<body>
+    <div layout:fragment="content">
+    	<nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/manager}">Manager</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User</li>
+          </ol>
+        </nav>
+        
+        <div class="row">
+    	  <div class="col-md-12">
+    	    <form th:action="@{/manager/user/{username}(username=*{username})}" th:object="${userCommand}" th:method="post">
+    	      <div class="form-row">
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="username">ID</label>
+    	      	  <input type="text" th:field="*{username}" class="form-control" placeholder="아이디를 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">아이디를 입력해주세요.</div>
+    	      	</div>
+    	      	<div class="form-group col-md-6">
+    	      	  <label for="password">Password</label>
+    	      	  <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요." th:errorclass="is-invalid" />
+    	      	  <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호를 입력해주세요.</div>
+    	      	</div>
+    	      </div>
+   	      	  <div class="form-group form-check">
+   	      	    <input type="checkbox" th:field="*{enabled}" class="form-check-input" th:value="true" />
+   	      	    <label class="form-check-label" th:for="${#ids.prev('enabled')}">사용여부</label>
+   	      	  </div>
+   	      	  <div class="form-group">
+   	      	  	<div class="form-check form-check-inline" th:each="auth : ${allAuthorities}">
+   	      	  		<input type="checkbox" class="form-check-input" th:field="*{authorities}" th:value="${auth}" />
+   	      	  		<label th:for="${#ids.prev('authorities')}" class="form-check-label" th:text="${auth}">ROLE</label>
+   	      	  	</div>
+   	      	  </div>
+    	      <button type="submit" class="btn btn-primary btn-block">Save changes</button>  
+    	    </form>
+    	  </div>
+    	</div>
+    </div>
+</body>
+</html>
