@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.poseidon.dolphin.simulator.member.Member;
-import com.poseidon.dolphin.simulator.member.repository.MemberRepository;
+import com.poseidon.dolphin.member.Member;
+import com.poseidon.dolphin.member.repository.MemberRepository;
 import com.poseidon.dolphin.simulator.timeline.Activity;
 import com.poseidon.dolphin.simulator.timeline.State;
 import com.poseidon.dolphin.simulator.timeline.Timeline;

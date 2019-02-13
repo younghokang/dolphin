@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 
 public class WalletTests {
 	

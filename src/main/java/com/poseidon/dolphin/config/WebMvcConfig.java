@@ -8,7 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.poseidon.dolphin.simulator.member.service.MemberService;
+import com.poseidon.dolphin.member.service.MemberService;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {

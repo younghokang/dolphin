@@ -18,9 +18,9 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
 
-import com.poseidon.dolphin.simulator.member.Member;
-import com.poseidon.dolphin.simulator.member.SocialType;
-import com.poseidon.dolphin.simulator.member.service.MemberService;
+import com.poseidon.dolphin.member.Member;
+import com.poseidon.dolphin.member.SocialType;
+import com.poseidon.dolphin.member.service.MemberService;
 
 public class SocialAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	protected final Log logger = LogFactory.getLog(this.getClass());
@@ -45,11 +45,9 @@ public class SocialAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		if(resultCode.equals("00")) {
 			Map<String, Object> naverResponse = (Map<String, Object>)details.get("response");
 			String id = (String)naverResponse.get("id");
-			String email = (String)naverResponse.get("email");
 			
 			Member member = new Member();
 			member.setUsername(id);
-			member.setEmail(email);
 			member.setSocialType(SocialType.NAVER);
 			member.setCurrent(LocalDate.now());
 			memberService.saveChanges(member);

@@ -11,10 +11,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.account.Account;
 import com.poseidon.dolphin.simulator.account.Contract;
 import com.poseidon.dolphin.simulator.account.PaymentFrequency;
-import com.poseidon.dolphin.simulator.member.Member;
 
 public class TimelineTests {
 	private Member member;

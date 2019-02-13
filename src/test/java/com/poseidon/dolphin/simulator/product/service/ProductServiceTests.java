@@ -40,7 +40,7 @@ public class ProductServiceTests {
 	
 	@Before
 	public void setUp() {
-		productService = new ProductService(productRepository);
+		productService = new ProductServiceImpl(productRepository);
 	}
 
 	@Test

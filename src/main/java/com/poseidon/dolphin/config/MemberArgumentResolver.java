@@ -8,8 +8,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.poseidon.dolphin.simulator.member.Member;
-import com.poseidon.dolphin.simulator.member.service.MemberService;
+import com.poseidon.dolphin.member.Member;
+import com.poseidon.dolphin.member.service.MemberService;
 
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 	private final MemberService memberService;

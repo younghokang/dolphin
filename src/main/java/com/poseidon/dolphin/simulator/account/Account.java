@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.product.Interest;
 import com.poseidon.dolphin.simulator.product.InterestRate;
 import com.poseidon.dolphin.simulator.product.InterestRateType;
@@ -52,7 +53,7 @@ public class Account {
 	@JoinColumn(name="memberId")
 	private Member member;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<AccountDetail> accountDetails = new ArrayList<>();
 	
 	private Contract contract;

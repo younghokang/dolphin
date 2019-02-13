@@ -1,4 +1,4 @@
-package com.poseidon.dolphin.simulator.command;
+package com.poseidon.dolphin.simulator.account;
 
 import javax.validation.constraints.Min;
 

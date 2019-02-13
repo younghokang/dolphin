@@ -21,8 +21,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.account.Account;
-import com.poseidon.dolphin.simulator.member.Member;
 import com.poseidon.dolphin.simulator.timeline.converter.ActivityConverter;
 
 @Entity

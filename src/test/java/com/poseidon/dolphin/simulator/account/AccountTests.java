@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.product.InterestRate;
 import com.poseidon.dolphin.simulator.product.InterestRateType;
 import com.poseidon.dolphin.simulator.product.Product;

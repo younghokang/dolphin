@@ -1,4 +1,4 @@
-package com.poseidon.dolphin.simulator.command;
+package com.poseidon.dolphin.comment;
 
 import javax.validation.constraints.Size;
 

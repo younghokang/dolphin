@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.poseidon.dolphin.simulator.command.CommentCommand;
-import com.poseidon.dolphin.simulator.comment.Comment;
-import com.poseidon.dolphin.simulator.comment.repository.CommentRepository;
-import com.poseidon.dolphin.simulator.comment.service.CommentService;
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.comment.Comment;
+import com.poseidon.dolphin.comment.CommentCommand;
+import com.poseidon.dolphin.comment.repository.CommentRepository;
+import com.poseidon.dolphin.comment.service.CommentService;
+import com.poseidon.dolphin.member.Member;
 
 @Controller
 public class HomeController {
@@ -38,8 +38,9 @@ public class HomeController {
 	}
 	
 	@PostMapping("/comment/write")
-	public String commentWrite(Member member, @ModelAttribute @Valid CommentCommand commentCommand, Errors errors, RedirectAttributes ra) {
+	public String commentWrite(Member member, @ModelAttribute @Valid CommentCommand commentCommand, Errors errors, RedirectAttributes ra, Model model, Pageable pageable) {
 		if(errors.hasErrors()) {
+			model.addAttribute("comments", commentRepository.findAll(pageable));
 			return "index";
 		}
 		
@@ -64,5 +65,5 @@ public class HomeController {
 		ra.addFlashAttribute("message", "comment.removeSuccess");
 		return "redirect:/";
 	}
-
+	
 }

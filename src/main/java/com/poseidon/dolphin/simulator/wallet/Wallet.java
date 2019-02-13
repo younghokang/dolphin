@@ -8,6 +8,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -34,7 +35,7 @@ public class Wallet {
 	@JoinColumn(name="memberId")
 	private Member member;
 	private long balance;
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="WalletLog", joinColumns= {@JoinColumn(name="walletId")})
 	private List<WalletLog> logs = new ArrayList<>();
 	public Long getId() {

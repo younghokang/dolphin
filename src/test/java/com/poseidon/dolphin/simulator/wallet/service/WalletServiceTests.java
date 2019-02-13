@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.wallet.TransferType;
 import com.poseidon.dolphin.simulator.wallet.Wallet;
 import com.poseidon.dolphin.simulator.wallet.WalletLog;
@@ -32,7 +32,7 @@ public class WalletServiceTests {
 	
 	@Before
 	public void setUp() {
-		walletService = new WalletService(walletRepository);
+		walletService = new WalletServiceImpl(walletRepository);
 		
 		member = new Member();
 		member.setUsername("alice");

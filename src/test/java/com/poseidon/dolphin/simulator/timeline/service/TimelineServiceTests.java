@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.timeline.Activity;
 import com.poseidon.dolphin.simulator.timeline.State;
 import com.poseidon.dolphin.simulator.timeline.Timeline;
@@ -34,7 +34,7 @@ public class TimelineServiceTests {
 	
 	@Before
 	public void setUp() {
-		timelineService = new TimelineService(timelineRepository);
+		timelineService = new TimelineServiceImpl(timelineRepository);
 		
 		member = new Member();
 		member.setUsername("afraid86@gmail.com");

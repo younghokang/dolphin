@@ -1,4 +1,4 @@
-package com.poseidon.dolphin.simulator.comment;
+package com.poseidon.dolphin.comment;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.poseidon.dolphin.simulator.member.Member;
+import com.poseidon.dolphin.member.Member;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

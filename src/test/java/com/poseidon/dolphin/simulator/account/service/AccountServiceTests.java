@@ -20,13 +20,13 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.account.Account;
 import com.poseidon.dolphin.simulator.account.AccountDetail;
 import com.poseidon.dolphin.simulator.account.Contract;
 import com.poseidon.dolphin.simulator.account.PaymentFrequency;
 import com.poseidon.dolphin.simulator.account.State;
 import com.poseidon.dolphin.simulator.account.repository.AccountRepository;
-import com.poseidon.dolphin.simulator.member.Member;
 import com.poseidon.dolphin.simulator.product.Product;
 import com.poseidon.dolphin.simulator.product.ProductType;
 
@@ -39,7 +39,7 @@ public class AccountServiceTests {
 	
 	@Before
 	public void setUp() {
-		accountService = new AccountService(accountRepository);
+		accountService = new AccountServiceImpl(accountRepository);
 	}
 	
 	@Test
