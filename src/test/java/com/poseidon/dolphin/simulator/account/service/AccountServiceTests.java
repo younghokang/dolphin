@@ -24,6 +24,7 @@ import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.account.Account;
 import com.poseidon.dolphin.simulator.account.AccountDetail;
 import com.poseidon.dolphin.simulator.account.Contract;
+import com.poseidon.dolphin.simulator.account.NotFoundAccountException;
 import com.poseidon.dolphin.simulator.account.PaymentFrequency;
 import com.poseidon.dolphin.simulator.account.State;
 import com.poseidon.dolphin.simulator.account.repository.AccountRepository;
@@ -130,7 +131,7 @@ public class AccountServiceTests {
 		try {
 			accountService.closeAccount(id);
 			fail();
-		} catch(NullPointerException e) {}
+		} catch(NotFoundAccountException e) {}
 		
 		given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
 		given(accountRepository.save(any(Account.class))).willReturn(account);

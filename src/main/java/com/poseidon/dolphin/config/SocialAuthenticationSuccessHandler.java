@@ -1,7 +1,6 @@
 package com.poseidon.dolphin.config;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -16,6 +15,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.poseidon.dolphin.member.Member;
@@ -45,11 +45,11 @@ public class SocialAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		if(resultCode.equals("00")) {
 			Map<String, Object> naverResponse = (Map<String, Object>)details.get("response");
 			String id = (String)naverResponse.get("id");
+			Assert.notNull(id, "id must not be null");
 			
 			Member member = new Member();
 			member.setUsername(id);
 			member.setSocialType(SocialType.NAVER);
-			member.setCurrent(LocalDate.now());
 			memberService.saveChanges(member);
 		}
 		

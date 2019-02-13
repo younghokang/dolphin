@@ -1,8 +1,11 @@
 package com.poseidon.dolphin.member.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -27,13 +30,16 @@ public class MemberServiceImpl implements MemberService {
 		Assert.notNull(member, "member must not be null");
 		return memberRepository.findByUsername(member.getUsername())
 				.map(mapper -> {
+					mapper.setSocialType(member.getSocialType());
 					if(!StringUtils.isEmpty(member.getEmail())) {
 						mapper.setEmail(member.getEmail());
 					}
-					mapper.setSocialType(member.getSocialType());
-					mapper.setCurrent(member.getCurrent());
+					if(member.getCurrent() != null) {
+						mapper.setCurrent(member.getCurrent());
+					}
 					return memberRepository.save(mapper);
 				}).orElseGet(() -> {
+					member.setCurrent(LocalDate.now());
 					return memberRepository.save(member);
 				});
 	}
@@ -43,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
 	public Member loadByUsername(String username) {
 		Assert.notNull(username, "username must not be null");
 		return memberRepository.findByUsername(username)
-				.orElseThrow(IllegalArgumentException::new);
+				.orElseThrow(() -> new UsernameNotFoundException(username));
 	}
 
 }

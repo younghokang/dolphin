@@ -81,7 +81,7 @@ public enum InterestType {
 			return interestType.getProductType() == contract.getProductType() && 
 					interestType.getInterest() == contract.getInterest(); 
 		}).findAny()
-		.orElseThrow(IllegalArgumentException::new);
+		.orElseThrow(UnsupportedOperationException::new);
 	}
 	
 }

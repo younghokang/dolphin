@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import com.poseidon.dolphin.simulator.TestState;
 import com.poseidon.dolphin.simulator.filter.ProductFilter;
 import com.poseidon.dolphin.simulator.product.JoinDeny;
+import com.poseidon.dolphin.simulator.product.NotFoundProductException;
 import com.poseidon.dolphin.simulator.product.Product;
 import com.poseidon.dolphin.simulator.product.ProductType;
 import com.poseidon.dolphin.simulator.product.repository.ProductRepository;
@@ -40,9 +42,9 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public List<Product> getFilteredProductList(ProductType productType, long balance, int period, ChronoUnit periodUnit, JoinDeny joinDeny, Set<String> excludeCompanyNumbers) {
-		assert joinDeny != null;
-		assert productType != null;
-		assert balance > Product.DEFAULT_MIN_BALANCE;
+		Assert.notNull(joinDeny, "joinDeny must not be null");
+		Assert.notNull(productType, "productType must not be null");
+		Assert.isTrue(balance > Product.DEFAULT_MIN_BALANCE, "balance must be greater than " + Product.DEFAULT_MIN_BALANCE);
 		
 		List<Product> products = productRepository.findAllByProductTypeAndTestState(productType, TestState.DONE).stream()
 				.filter(p -> p.getJoinDeny().equals(joinDeny) && !excludeCompanyNumbers.contains(p.getCompanyNumber()))
@@ -70,11 +72,11 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public Product getFilteredProductById(long id, long balance, Integer period, ChronoUnit periodUnit) {
-		assert id > 0;
-		assert balance > Product.DEFAULT_MIN_BALANCE;
+		Assert.isTrue(id > 0, "productId must be greater than zero");
+		Assert.isTrue(balance > Product.DEFAULT_MIN_BALANCE, "balance must be greater than " + Product.DEFAULT_MIN_BALANCE);
 		
 		Product product = productRepository.findById(id)
-				.orElseThrow(NullPointerException::new);
+				.orElseThrow(() -> new NotFoundProductException(id));
 		ProductFilter productFilter = new ProductFilter(balance);
 		if(period != null) {
 			productFilter.setPeriod(period);

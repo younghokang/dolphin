@@ -25,7 +25,7 @@
 			    </nav>
     		</div>
     		<div class="col-md-4">
-    			<div class="modal" tabindex="-1" role="dialog" style="display:block; position:sticky;" sec:authorize="not isAuthenticated()">
+    			<div class="modal" tabindex="-1" role="dialog" sec:authorize="not isAuthenticated()">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
@@ -43,7 +43,7 @@
 				    </div>
 				  </div>
 				</div>
-    			<div class="modal" tabindex="-1" role="dialog" style="display:block; position:sticky;" sec:authorize="isAuthenticated()">
+    			<div class="modal" tabindex="-1" role="dialog" sec:authorize="isAuthenticated()">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				    <form th:action="@{/comment/write}" th:object="${commentCommand}" th:method="post">

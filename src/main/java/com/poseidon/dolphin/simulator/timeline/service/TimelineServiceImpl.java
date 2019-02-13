@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.timeline.Activity;
+import com.poseidon.dolphin.simulator.timeline.NotFoundTimelineException;
 import com.poseidon.dolphin.simulator.timeline.State;
 import com.poseidon.dolphin.simulator.timeline.Timeline;
 import com.poseidon.dolphin.simulator.timeline.repository.TimelineRepository;
@@ -46,7 +47,7 @@ public class TimelineServiceImpl implements TimelineService {
 				.map(timeline -> {
 					timeline.setState(State.DONE);
 					return timelineRepository.save(timeline);
-				}).orElseThrow(NullPointerException::new);
+				}).orElseThrow(() -> new NotFoundTimelineException(member.getUsername(), State.PROCESS));
 	}
 	
 	@Override

@@ -15,10 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poseidon.dolphin.member.Member;
@@ -228,6 +230,14 @@ public class SimulatorController {
 		model.addAttribute("products", productService.getFilteredProductList(ProductType.FIXED_DEPOSIT, balance, excludeCompanyNumbers));
 		model.addAttribute("accountCommand", accountCommand);
 		return "simulator/searchDepositProductsForm";
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ModelAndView simulatorErrorPage(Exception exception) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("exception", exception);
+		mav.setViewName("simulator/error");
+		return mav;
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,9 +17,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -34,6 +37,7 @@ import com.poseidon.dolphin.simulator.product.TaxType;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(indexes= {@Index(columnList="memberId"), @Index(columnList="state")})
 public class Account {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -159,12 +163,12 @@ public class Account {
 		ProductOption productOption = product.getProductOptions().stream()
 			.filter(option -> Long.compare(option.getId().longValue(), product.getFilteredOptionId().longValue()) == 0)
 			.findAny()
-			.orElseThrow(NullPointerException::new);
+			.orElseThrow(NoSuchElementException::new);
 		
 		InterestRate interestRate = productOption.getInterestRates().stream()
 				.filter(ir -> ir.getContractPeriod() == period)
 				.findAny()
-				.orElseThrow(NullPointerException::new);
+				.orElseThrow(NoSuchElementException::new);
 		
 		Contract contract = new Contract();
 		contract.setBalance(balance);

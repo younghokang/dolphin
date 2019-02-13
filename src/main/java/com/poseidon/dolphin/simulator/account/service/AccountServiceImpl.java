@@ -11,6 +11,7 @@ import com.poseidon.dolphin.member.Member;
 import com.poseidon.dolphin.simulator.account.Account;
 import com.poseidon.dolphin.simulator.account.AccountDetail;
 import com.poseidon.dolphin.simulator.account.Contract;
+import com.poseidon.dolphin.simulator.account.NotFoundAccountException;
 import com.poseidon.dolphin.simulator.account.State;
 import com.poseidon.dolphin.simulator.account.repository.AccountRepository;
 import com.poseidon.dolphin.simulator.product.Product;
@@ -65,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
 			.map(account -> {
 				account.setState(State.CLOSE);
 				return accountRepository.save(account);
-			}).orElseThrow(NullPointerException::new);
+			}).orElseThrow(() -> new NotFoundAccountException(id));
 	}
 	
 	@Override

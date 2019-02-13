@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -132,7 +133,7 @@ public class AccountTests {
 		try {
 			Account.writeUp(product, balance, current, dateOfPayment, period, periodUnit, paymentFrequency, taxType, taxRate);
 			fail("filteredOptionId 가 존재하지않습니다.");
-		} catch(NullPointerException e) {}
+		} catch(NoSuchElementException e) {}
 		
 		product.setFilteredOptionId(1L);
 		
@@ -145,7 +146,7 @@ public class AccountTests {
 		try {
 			Account.writeUp(product, balance, current, dateOfPayment, period, periodUnit, paymentFrequency, taxType, taxRate);
 			fail("36개월 상품이 없습니다.");
-		} catch(NullPointerException e) {}
+		} catch(NoSuchElementException e) {}
 		
 		productOption.setInterestRates(
 				Arrays.asList(

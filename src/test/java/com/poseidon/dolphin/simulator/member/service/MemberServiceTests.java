@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.poseidon.dolphin.member.Member;
@@ -69,7 +70,7 @@ public class MemberServiceTests {
 		try {
 			memberService.loadByUsername("username");
 			fail();
-		} catch(IllegalArgumentException e) {}
+		} catch(UsernameNotFoundException e) {}
 		
 		verify(memberRepository, times(2)).findByUsername(anyString());
 	}

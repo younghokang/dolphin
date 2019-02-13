@@ -14,8 +14,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -27,6 +29,7 @@ import com.poseidon.dolphin.simulator.timeline.converter.ActivityConverter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(indexes= {@Index(columnList="memberId"), @Index(columnList="state")})
 public class Timeline {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
