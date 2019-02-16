@@ -3,7 +3,6 @@ package com.poseidon.dolphin.simulator;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -157,7 +156,7 @@ public class SimulatorControllerTests {
         params.add("balance", Long.toString(Product.DEFAULT_MIN_BALANCE));
         
         List<Product> products = new ArrayList<>();
-        given(productService.getFilteredProductList(any(ProductType.class), anyLong(), anySet())).willReturn(products);
+        given(productService.findAllByProductTypeAndTestState(any(ProductType.class), any(TestState.class))).willReturn(products);
         
         mvc.perform(post("/simulator/searchSavingProductsForm")
                 .params(params))
@@ -176,7 +175,7 @@ public class SimulatorControllerTests {
             .andExpect(model().attributeDoesNotExist("products"))
             .andDo(print());
         
-        verify(productService, times(1)).getFilteredProductList(any(ProductType.class), anyLong(), anySet());
+        verify(productService, times(1)).findAllByProductTypeAndTestState(any(ProductType.class), any(TestState.class));
 	}
 	
 	@Test
@@ -234,7 +233,7 @@ public class SimulatorControllerTests {
         productOptions.add(productOption);
         product.setProductOptions(productOptions);
         product.setFilteredOptionId(1l);
-        given(productService.getFilteredProductById(anyLong(), anyLong())).willReturn(product);
+        given(productService.findById(anyLong())).willReturn(product);
         
         Account account = new Account();
         account.setId(10l);
@@ -261,7 +260,7 @@ public class SimulatorControllerTests {
 			.andExpect(flash().attribute("message", "simulator.openAccountSuccess"))
 			.andDo(print());
 		
-		verify(productService, times(1)).getFilteredProductById(anyLong(), anyLong());
+		verify(productService, times(1)).findById(anyLong());
 		verify(accountService, times(1)).openAccount(any(Member.class), any(Product.class), any(Contract.class));
 		verify(timelineService, times(1)).saveAll(any());
 	}
@@ -270,6 +269,7 @@ public class SimulatorControllerTests {
 	public void whenRequestNextTurnThenProcessTimeline() throws Exception {
 		Timeline timeline = new Timeline();
 		timeline.setActiveDate(LocalDate.now());
+		timeline.setActivity(Activity.INSTALLMENT_SAVING_REGULARY_PAYMENT);
 		given(timelineService.next(any(Member.class))).willReturn(timeline);
 		
 		given(memberService.saveChanges(any(Member.class))).willReturn(member);

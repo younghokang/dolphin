@@ -8,7 +8,6 @@ import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,7 +34,7 @@ public class Wallet {
 	@JoinColumn(name="memberId")
 	private Member member;
 	private long balance;
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection
 	@CollectionTable(name="WalletLog", joinColumns= {@JoinColumn(name="walletId")})
 	private List<WalletLog> logs = new ArrayList<>();
 	public Long getId() {

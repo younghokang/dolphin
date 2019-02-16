@@ -30,6 +30,7 @@ import com.poseidon.dolphin.simulator.account.AccountCommand;
 import com.poseidon.dolphin.simulator.account.Contract;
 import com.poseidon.dolphin.simulator.account.service.AccountService;
 import com.poseidon.dolphin.simulator.calculator.InterestCalculator;
+import com.poseidon.dolphin.simulator.filter.ProductFilter;
 import com.poseidon.dolphin.simulator.product.Product;
 import com.poseidon.dolphin.simulator.product.ProductType;
 import com.poseidon.dolphin.simulator.product.service.ProductService;
@@ -117,7 +118,10 @@ public class SimulatorController {
 		
 		long balance = accountCommand.getBalance();
 		Set<String> excludeCompanyNumbers = excludeCompaniesToSearchProducts(member, ProductType.INSTALLMENT_SAVING, balance);
-		model.addAttribute("products", productService.getFilteredProductList(ProductType.INSTALLMENT_SAVING, balance, excludeCompanyNumbers));
+		ProductFilter productFilter = new ProductFilter(balance);
+		productFilter.setExcludeCompanyNumbers(excludeCompanyNumbers);
+		List<Product> products = productFilter.filter(productService.findAllByProductTypeAndTestState(ProductType.INSTALLMENT_SAVING, TestState.DONE));
+		model.addAttribute("products", products);
 		return "simulator/searchSavingProductsForm";
 	}
 	
@@ -155,7 +159,10 @@ public class SimulatorController {
 			return productType.equals(ProductType.INSTALLMENT_SAVING) ? "simulator/searchSavingProductsForm" : "simulator/searchDepositProductsForm";
 		}
 		
-		Product product = productService.getFilteredProductById(productId, balance);
+		ProductFilter productFilter = new ProductFilter(balance);
+		Product product = productService.findById(productId);
+		productFilter.filter(product);
+		
 		Contract contract = Account.writeUp(product, balance, member.getCurrent());
 		
 		Account account = accountService.openAccount(member, product, contract);
@@ -188,7 +195,12 @@ public class SimulatorController {
 		Timeline timeline = timelineService.next(member);
 		member.setCurrent(timeline.getActiveDate());
 		memberService.saveChanges(member);
-		ra.addFlashAttribute("message", "simulator.nextTurnSuccess");
+		
+		String message = "simulator.nextTurnSuccess";
+		if(timeline.getActivity().equals(Activity.FIXED_DEPOSIT_ACCOUNT_CLOSE) || timeline.getActivity().equals(Activity.INSTALLMENT_SAVING_ACCOUNT_CLOSE)) {
+			message = "simulator.nextTurnStop";
+		}
+		ra.addFlashAttribute("message", message);
 		return "redirect:/simulator";
 	}
 	
@@ -227,7 +239,11 @@ public class SimulatorController {
 		accountCommand.setProductType(ProductType.FIXED_DEPOSIT);
 		
 		Set<String> excludeCompanyNumbers = excludeCompaniesToSearchProducts(member, ProductType.FIXED_DEPOSIT, balance);
-		model.addAttribute("products", productService.getFilteredProductList(ProductType.FIXED_DEPOSIT, balance, excludeCompanyNumbers));
+		ProductFilter productFilter = new ProductFilter(balance);
+		productFilter.setExcludeCompanyNumbers(excludeCompanyNumbers);
+		List<Product> products = productFilter.filter(productService.findAllByProductTypeAndTestState(ProductType.FIXED_DEPOSIT, TestState.DONE));
+		
+		model.addAttribute("products", products);
 		model.addAttribute("accountCommand", accountCommand);
 		return "simulator/searchDepositProductsForm";
 	}

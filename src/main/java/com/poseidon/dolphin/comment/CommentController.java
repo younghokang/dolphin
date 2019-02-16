@@ -32,7 +32,7 @@ public class CommentController {
 		this.commentService = commentService;
 	}
 	
-	@PostMapping("/comment/write")
+	@PostMapping("/write")
 	public String commentWrite(Member member, @ModelAttribute @Valid CommentCommand commentCommand, Errors errors, RedirectAttributes ra, Model model, Pageable pageable) {
 		if(errors.hasErrors()) {
 			model.addAttribute("comments", commentRepository.findAll(pageable));
@@ -48,7 +48,7 @@ public class CommentController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/comment/remove/{id}")
+	@GetMapping("/remove/{id}")
 	public String commentRemove(@PathVariable("id") long id, Member member, RedirectAttributes ra) {
 		Comment comment = commentRepository.findById(id)
 				.orElseThrow(() -> new NotFoundCommentException(id));

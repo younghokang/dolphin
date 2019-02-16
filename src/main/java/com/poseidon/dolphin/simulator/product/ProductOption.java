@@ -11,6 +11,7 @@ import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +48,7 @@ public class ProductOption {
 	private InterestRateType interestRateType;
 	@Convert(converter=ReserveTypeConverter.class)
 	private ReserveType reserveType;
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="ProductOptionInterestRate", joinColumns=@JoinColumn(name="productOptionId"))
 	@OrderBy("contractPeriod")
 	private List<InterestRate> interestRates = new ArrayList<>();

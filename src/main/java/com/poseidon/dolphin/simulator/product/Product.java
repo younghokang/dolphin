@@ -3,6 +3,7 @@ package com.poseidon.dolphin.simulator.product;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,6 +27,7 @@ import javax.persistence.Transient;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 import com.poseidon.dolphin.simulator.TestState;
 import com.poseidon.dolphin.simulator.company.FinanceCompany;
@@ -149,7 +152,7 @@ public class Product {
 	 */
 	@Enumerated(EnumType.STRING)
 	private InterestPaymentType interestPaymentType;
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@OrderBy("interestRateType ASC, reserveType ASC")
 	private List<ProductOption> productOptions = new ArrayList<>();
 	@Enumerated(EnumType.STRING)
@@ -388,6 +391,13 @@ public class Product {
 	
 	public boolean availableAge(int age) {
 		return age >= getMinAge() && age <= getMaxAge();
+	}
+	
+	public boolean hasJoinMember(String[] condition) {
+		return Arrays.stream(condition)
+				.filter(p -> StringUtils.trimAllWhitespace(joinMember).contains(p))
+				.findAny()
+				.isPresent();
 	}
 	
 	@Override

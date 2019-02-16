@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +56,7 @@ public class Account {
 	@JoinColumn(name="memberId")
 	private Member member;
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<AccountDetail> accountDetails = new ArrayList<>();
 	
 	private Contract contract;

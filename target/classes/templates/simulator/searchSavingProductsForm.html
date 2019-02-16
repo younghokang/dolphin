@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{templates/simulator/default}">
+<head>
+  <title>Simulator</title>
+</head>
+<body>
+    <div layout:fragment="content">
+      <div class="row">
+      	<div class="col-md-12">
+      	  <div class="card text-center">
+      	  	<div class="card-header">
+      	  		적금계좌 추천
+      	  	</div>
+      	  	<div class="card-body">
+      	  		<h5 class="card-title">매월 납입액을 입력하시고 적금계좌를 추천받으세요!</h5>
+      	  		<p class="card-text">납입기간: 12개월 기준</p>
+      	  		<form class="needs-validation" th:action="@{/simulator/searchSavingProductsForm}" th:object="${accountCommand}" th:method="post" novalidate="novalidate">
+      	  		<input type="hidden" th:field="*{productType}" />
+			  	<div class="input-group mb-3">
+			  		<div class="input-group-prepend">
+			      		<label class="input-group-text" for="balance">월 납입 금액</label>
+			    	</div>
+		        	<input type="number" class="form-control" th:field="*{balance}" th:errorclass="is-invalid" />
+			    	<div class="input-group-append">
+		    	  		<span class="input-group-text">원</span>
+		  	    	</div>
+		  	    	<div class="invalid-feedback" th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}">금액을 올바르게 입력해주세요.</div>
+			  	</div>
+		    	</form>
+			    <div class="card-deck" th:if="${not #lists.isEmpty(products)}">
+				  <div class="card text-center" th:each="product, productStat : ${products}">
+				    <!--
+				    <img class="card-img-top" src=".../100px180/" alt="Card image cap"> 
+				     -->
+				    <div class="card-header" th:switch="${productStat.index}">
+				      	<h3 th:case="0">1st</h3>
+				      	<h3 th:case="1">2nd</h3>
+				      	<h3 th:case="*">3rd</h3>
+				    </div>
+				    <div class="card-body">
+				      <h5 class="card-title" th:text="${product.companyName}">Card title</h5>
+				      <p class="card-text" th:text="${product.name}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+				      <button class="btn btn-primary" data-toggle="modal" th:data-target="'#productDetailModal' + ${productStat.index}" th:text="${#numbers.formatCurrency(product.afterPayingTax)}">Pick</button>
+				      
+				      <!-- Modal -->
+						<div class="modal fade" th:id="'productDetailModal' + ${productStat.index}" tabindex="-1" role="dialog" th:aria-labelledby="'productDetailModalTitle' + ${productStat.index}" aria-hidden="true">
+						  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" th:id="'productDetailModalTitle' + ${productStat.index}" th:text="${product.name}">Modal title</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						      	<h5 class="text-left">상품 기본정보</h5>
+						      	<hr />
+						      	<dl class="row">
+						      		<dt class="col-md-3">가입대상</dt>
+						      		<dd class="col-md-9" th:text="${product.joinMember}">가입대상</dd>
+						      		<dt class="col-md-3">가입기간</dt>
+						      		<dd class="col-md-9"><span th:text="${product.minPeriod}">1</span>개월부터 <span th:text="${product.maxPeriod}">36</span>개월까지</dd>
+						      		<dt class="col-md-3">최소 가입(납입)금액</dt>
+						      		<dd class="col-md-9" th:text="${#numbers.formatCurrency(product.minBalance)}">100,000원</dd>
+						      		<dt class="col-md-3">기본 금리(연 %)</dt>
+						      		<dd class="col-md-9">
+						      			<table class="table" th:each="option, optionStat : ${product.productOptions}">
+								      	  <caption><span th:text="#{|interestRateType.${option.interestRateType}|}">단리/복리</span> | <span th:text="#{|reserveType.${option.reserveType}|}">적립유형</span></caption>
+										  <tbody>
+										  <tr th:each="interestRate, interestRateStat : ${option.interestRates}">
+										  	<td><span th:text="${interestRate.contractPeriod}">6</span>개월</td>
+										  	<td th:text="${#numbers.formatPercent(interestRate.rate, 1, 2)}">2.50%</td>
+										  	<td th:text="${#numbers.formatPercent(interestRate.primeRate, 1, 2)}">2.50%</td>
+										  </tr>
+										  </tbody>
+										</table>
+						      		</dd>
+						      		<dt class="col-md-3">예금자보호</dt>
+						      		<dd class="col-md-9" th:text="#{|bool.${product.depositProtect}|}">예금자보호 상품</dd>
+						      	</dl>
+						      	<br />
+						      	<h5 class="text-left">상품 유의사항</h5>
+						      	<hr />
+						      	<dl class="row">
+						      		<dt class="col-md-3">가입방법</dt>
+						      		<dd class="col-md-9" th:text="${product.joinWay}">가입방법</dd>
+						      		<dt class="col-md-3">가입제한</dt>
+						      		<dd class="col-md-9" th:text="#{|joinDeny.${product.joinDeny}|}">가입제한</dd>
+						      		<dt class="col-md-3">기타 유의사항</dt>
+						      		<dd class="col-md-9" th:text="${product.etcNote}">기타 유의사항</dd>
+						      		<dt class="col-md-3">최고 한도금액</dt>
+						      		<dd class="col-md-9" th:text="${#numbers.formatCurrency(product.maxBalance)}">100,000원</dd>
+						      		<dt class="col-md-3">만기 후 이자</dt>
+						      		<dd class="col-md-9" th:text="${product.maturityInterest}">만기 후 이자</dd>
+						      		<dt class="col-md-3">우대조건</dt>
+						      		<dd class="col-md-9" th:text="${product.specialCondition}">우대조건</dd>
+						      		<dt class="col-md-3">비과세저축</dt>
+						      		<dd class="col-md-9" th:text="#{|bool.${product.nonTaxable}|}">비과세저축 상품</dd>
+						      	</dl>
+						      </div>
+						      <div class="modal-footer">
+						      <form th:action="@{/simulator/openAccount}" th:object="${accountCommand}" th:method="post" novalidate="novalidate">
+						      <input type="hidden" th:field="*{balance}" />
+						      <input type="hidden" th:field="*{productType}" />
+						      <input type="hidden" name="productId" th:value="${product.id}" />
+						        <button type="submit" class="btn btn-primary">계좌 개설</button>
+						      </form>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+				    </div>
+				    <div class="card-footer">
+				      <small class="text-muted" th:text="${#temporals.format(product.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">Last updated 3 mins ago</small>
+				    </div>
+				  </div>
+				</div>
+      	  	</div>
+      	  </div> 
+      	</div>
+      </div>
+      
+    </div>
+</body>
+</html>

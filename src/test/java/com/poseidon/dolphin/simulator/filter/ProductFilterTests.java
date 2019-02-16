@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.poseidon.dolphin.simulator.product.InterestRate;
 import com.poseidon.dolphin.simulator.product.InterestRateType;
+import com.poseidon.dolphin.simulator.product.JoinDeny;
 import com.poseidon.dolphin.simulator.product.Product;
 import com.poseidon.dolphin.simulator.product.ProductOption;
 import com.poseidon.dolphin.simulator.product.ProductType;
@@ -44,11 +45,10 @@ public class ProductFilterTests {
 		
 		ProductFilter productsFilter = new ProductFilter(balance);
 		List<Product> filtered = productsFilter.filter(products);
-		assertThat(filtered.size()).isEqualTo(4);
+		assertThat(filtered.size()).isEqualTo(3);
 		assertThat(filtered.get(0)).matches(p -> p.getCode().equals("HK00001") && p.getCompanyNumber().equals("0010345"));
 		assertThat(filtered.get(1)).matches(p -> p.getCode().equals("24000") && p.getCompanyNumber().equals("0010346"));
 		assertThat(filtered.get(2)).matches(p -> p.getCode().equals("2407") && p.getCompanyNumber().equals("0010349"));
-		assertThat(filtered.get(3)).matches(p -> p.getCode().equals("2400") && p.getCompanyNumber().equals("0010349"));
 		
 		filtered.stream().forEach(item -> {
 			log.debug(String.format("은행코드: %s, 상품코드: %s, 은행명: %s, 상품명: %s, 가입한도: %,d원", item.getCompanyNumber(), item.getCode(), item.getCompanyName(), item.getName(), item.getMaxBalance()));
@@ -79,6 +79,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(0);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		ProductOption productOption = new ProductOption();
 		productOption.setId(210l);
@@ -116,6 +118,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(0);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(213l);
@@ -153,6 +157,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(0);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(216l);
@@ -176,6 +182,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(0);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(218l);
@@ -211,6 +219,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(0);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(221l);
@@ -294,6 +304,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(10000000);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		ProductOption productOption = new ProductOption();
 		productOption.setId(204l);
@@ -331,6 +343,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(300000);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(207l);
@@ -353,6 +367,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(0);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(209l);
@@ -377,6 +393,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(10000000);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(211l);
@@ -401,6 +419,8 @@ public class ProductFilterTests {
 		product.setPeriodUnit(ChronoUnit.MONTHS);
 		product.setMinBalance(0);
 		product.setMaxBalance(1000000);
+		product.setJoinDeny(JoinDeny.NONE);
+		product.setJoinMember("제한없음");
 		
 		productOption = new ProductOption();
 		productOption.setId(213l);

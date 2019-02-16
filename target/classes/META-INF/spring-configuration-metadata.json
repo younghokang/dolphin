@@ -1,0 +1,136 @@
+{
+  "groups": [
+    {
+      "name": "naver.client",
+      "type": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails",
+      "sourceType": "com.poseidon.dolphin.config.SecurityConfig",
+      "sourceMethod": "public org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails naver() "
+    },
+    {
+      "name": "naver.resource",
+      "type": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties",
+      "sourceType": "com.poseidon.dolphin.config.SecurityConfig",
+      "sourceMethod": "public org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties naverResource() "
+    },
+    {
+      "name": "naver.resource.jwk",
+      "type": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties$Jwk",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties",
+      "sourceMethod": "public org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties.Jwk getJwk() "
+    },
+    {
+      "name": "naver.resource.jwt",
+      "type": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties$Jwt",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties",
+      "sourceMethod": "public org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties.Jwt getJwt() "
+    }
+  ],
+  "properties": [
+    {
+      "name": "naver.client.access-token-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.authentication-scheme",
+      "type": "org.springframework.security.oauth2.common.AuthenticationScheme",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.client-authentication-scheme",
+      "type": "org.springframework.security.oauth2.common.AuthenticationScheme",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.client-id",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.client-secret",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.grant-type",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.id",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.pre-established-redirect-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.scope",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.token-name",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.use-current-uri",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.client.user-authorization-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails"
+    },
+    {
+      "name": "naver.resource.id",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties"
+    },
+    {
+      "name": "naver.resource.jwk.key-set-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties$Jwk"
+    },
+    {
+      "name": "naver.resource.jwt.key-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties$Jwt"
+    },
+    {
+      "name": "naver.resource.jwt.key-value",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties$Jwt"
+    },
+    {
+      "name": "naver.resource.prefer-token-info",
+      "type": "java.lang.Boolean",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties"
+    },
+    {
+      "name": "naver.resource.service-id",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties"
+    },
+    {
+      "name": "naver.resource.token-info-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties"
+    },
+    {
+      "name": "naver.resource.token-type",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties"
+    },
+    {
+      "name": "naver.resource.user-info-uri",
+      "type": "java.lang.String",
+      "sourceType": "org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties"
+    }
+  ],
+  "hints": []
+}
