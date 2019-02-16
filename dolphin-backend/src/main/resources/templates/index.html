@@ -10,6 +10,12 @@
 <body>
     <div layout:fragment="content">
     	<h1>Hello, <span sec:authentication="name">!</span>!</h1>
+	    <hr />
+	   	<div class="alert alert-primary" role="alert" th:if="${!#strings.isEmpty(message)}" th:text="${message}">message</div>
+	   	<div class="list-group">
+	      <h3>Frontend Application Cache Put</h3>
+	      <a th:each="productType : ${allProductTypes}" th:href="@{/cache/products/{productType}(productType=${productType})}" class="list-group-item list-group-item-action" th:text="${productType}">productType</a>
+	   	</div>
     </div>
 </body>
 </html>

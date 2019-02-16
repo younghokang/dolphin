@@ -8,36 +8,35 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.poseidon.dolphin.api.fss.collector.CompanyCollector;
-import com.poseidon.dolphin.api.fss.collector.DepositCollector;
-import com.poseidon.dolphin.api.fss.collector.SavingCollector;
 import com.poseidon.dolphin.api.fss.common.FinanceGroup;
 import com.poseidon.dolphin.api.fss.company.Company;
 import com.poseidon.dolphin.api.fss.company.json.FSSCompanyResult;
 import com.poseidon.dolphin.api.fss.company.repository.CompanyRepository;
+import com.poseidon.dolphin.api.fss.company.service.CompanyService;
 import com.poseidon.dolphin.api.fss.connector.CompanyDummyConnector;
 import com.poseidon.dolphin.api.fss.connector.DepositDummyConnector;
 import com.poseidon.dolphin.api.fss.connector.SavingDummyConnector;
 import com.poseidon.dolphin.api.fss.deposit.Deposit;
 import com.poseidon.dolphin.api.fss.deposit.json.FSSDepositResult;
 import com.poseidon.dolphin.api.fss.deposit.repository.DepositRepository;
+import com.poseidon.dolphin.api.fss.deposit.service.DepositService;
 import com.poseidon.dolphin.api.fss.result.ErrorCode;
-import com.poseidon.dolphin.api.fss.result.repository.ResultRepository;
+import com.poseidon.dolphin.api.fss.result.service.ResultService;
 import com.poseidon.dolphin.api.fss.saving.Saving;
 import com.poseidon.dolphin.api.fss.saving.repository.SavingRepository;
+import com.poseidon.dolphin.api.fss.saving.service.SavingService;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest
+@Transactional
 public class CollectorTests {
 	
 	@Value("${api.fss.key}")
 	private String apiKey;
-	
-	@Autowired
-	private ResultRepository resultRepository;
 	
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -48,12 +47,24 @@ public class CollectorTests {
 	@Autowired
 	private DepositRepository depositRepository;
 	
+	@Autowired
+	private ResultService resultService;
+	
+	@Autowired
+	private SavingService savingService;
+	
+	@Autowired
+	private DepositService depositService;
+	
+	@Autowired
+	private CompanyService companyService;
+	
 	@Test
 	public void testCompanyCollector() {
-		CompanyCollector collector = new CompanyCollector(resultRepository, new CompanyDummyConnector(), apiKey, companyRepository);
+		CompanyCollector collector = new CompanyCollector(resultService, new CompanyDummyConnector(), apiKey, companyService);
 		FSSCompanyResult fssCompanyResult = collector.collect(FinanceGroup.BANK, 1);
 		assertThat(fssCompanyResult.getErr_cd()).isEqualTo(ErrorCode.SUCCESS.getCode());
-		Company company = companyRepository.findByFinanceCompanyNumberAndDisclosureMonth("0010001", "201901").orElse(null);
+		Company company = companyService.findByFinanceCompanyNumberAndDisclosureMonth("0010001", "201901").orElse(null);
 		assertThat(company).isNotNull();
 		assertThat(company.getCompanyOptions()).isNotEmpty();
 		assertThat(company.getCompanyOptions().size()).isEqualTo(17);
@@ -61,7 +72,7 @@ public class CollectorTests {
 	
 	@Test
 	public void testSavingCollector() {
-		SavingCollector collector = new SavingCollector(resultRepository, new SavingDummyConnector(), apiKey, savingRepository);
+		SavingCollector collector = new SavingCollector(resultService, new SavingDummyConnector(), apiKey, savingService);
 		FSSDepositResult fssDepositResult = collector.collect(FinanceGroup.BANK, 1);
 		assertThat(fssDepositResult.getErr_cd()).isEqualTo(ErrorCode.SUCCESS.getCode());
 		Saving saving = savingRepository.findByFinanceCompanyNumberAndFinanceProductCodeAndDisclosureMonth("0010002", "00266451", "201901").orElse(null);
@@ -72,7 +83,7 @@ public class CollectorTests {
 	
 	@Test
 	public void testDepositCollector() {
-		DepositCollector collector = new DepositCollector(resultRepository, new DepositDummyConnector(), apiKey, depositRepository);
+		DepositCollector collector = new DepositCollector(resultService, new DepositDummyConnector(), apiKey, depositService);
 		FSSDepositResult fssDepositResult = collector.collect(FinanceGroup.BANK, 1);
 		assertThat(fssDepositResult.getErr_cd()).isEqualTo(ErrorCode.SUCCESS.getCode());
 		Deposit deposit = depositRepository.findByFinanceCompanyNumberAndFinanceProductCodeAndDisclosureMonth("0010345", "HK00001", "201901").orElse(null);
@@ -83,7 +94,7 @@ public class CollectorTests {
 	
 	@Test
 	public void findAllByMaximumDisclosureMonth() {
-		CompanyCollector companyCollector = new CompanyCollector(resultRepository, new CompanyDummyConnector(), apiKey, companyRepository);
+		CompanyCollector companyCollector = new CompanyCollector(resultService, new CompanyDummyConnector(), apiKey, companyService);
 		companyCollector.collect(FinanceGroup.BANK, 1);
 		
 		String companyDisclosureMonth = companyRepository.getMaxDisclosureMonth();
@@ -92,7 +103,7 @@ public class CollectorTests {
 		List<Company> companyList = companyRepository.findAllByDisclosureMonth(companyDisclosureMonth);
 		assertThat(companyList).allMatch(company -> company.getDisclosureMonth().equals(companyDisclosureMonth));
 		
-		SavingCollector savingCollector = new SavingCollector(resultRepository, new SavingDummyConnector(), apiKey, savingRepository);
+		SavingCollector savingCollector = new SavingCollector(resultService, new SavingDummyConnector(), apiKey, savingService);
 		savingCollector.collect(FinanceGroup.BANK, 1);
 		
 		String savingDisclosureMonth = savingRepository.getMaxDisclosureMonth();
@@ -100,7 +111,7 @@ public class CollectorTests {
 		List<Saving> savingList = savingRepository.findAllByDisclosureMonth(savingDisclosureMonth);
 		assertThat(savingList).allMatch(saving -> saving.getDisclosureMonth().equals(savingDisclosureMonth));
 		
-		DepositCollector depositCollector = new DepositCollector(resultRepository, new DepositDummyConnector(), apiKey, depositRepository);
+		DepositCollector depositCollector = new DepositCollector(resultService, new DepositDummyConnector(), apiKey, depositService);
 		depositCollector.collect(FinanceGroup.BANK, 1);
 		
 		String depositDisclosureMonth = depositRepository.getMaxDisclosureMonth();

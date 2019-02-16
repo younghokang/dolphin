@@ -36,7 +36,7 @@ public class FinanceCompanyServiceTests {
 	
 	@Before
 	public void setUp() {
-		financeCompanyService = new FinanceCompanyService(financeCompanyRepository);
+		financeCompanyService = new FinanceCompanyServiceImpl(financeCompanyRepository);
 	}
 	
 	@Test

@@ -30,7 +30,7 @@ public class UserServiceTests {
 	
 	@Before
 	public void setUp() {
-		userService = new UserService(userRepository);
+		userService = new UserServiceImpl(userRepository);
 	}
 	
 	@Test

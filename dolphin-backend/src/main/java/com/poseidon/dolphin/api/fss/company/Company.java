@@ -9,7 +9,6 @@ import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +43,7 @@ public class Company {
 	private String homepageUrl;
 	private String callCenterTel;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection
 	@CollectionTable(name="FSSCompanyOptions", joinColumns=@JoinColumn(name="fssCompanyId"))
 	private List<CompanyOption> companyOptions = new ArrayList<>();
 	

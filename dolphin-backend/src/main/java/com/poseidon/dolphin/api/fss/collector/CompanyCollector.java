@@ -6,34 +6,34 @@ import com.poseidon.dolphin.api.fss.common.FinanceGroup;
 import com.poseidon.dolphin.api.fss.company.Company;
 import com.poseidon.dolphin.api.fss.company.CompanyOption;
 import com.poseidon.dolphin.api.fss.company.json.FSSCompanyResult;
-import com.poseidon.dolphin.api.fss.company.repository.CompanyRepository;
+import com.poseidon.dolphin.api.fss.company.service.CompanyService;
 import com.poseidon.dolphin.api.fss.connector.Connector;
-import com.poseidon.dolphin.api.fss.result.repository.ResultRepository;
+import com.poseidon.dolphin.api.fss.result.service.ResultService;
 
 public class CompanyCollector extends AbstractCollector<FSSCompanyResult> {
-	private final CompanyRepository companyRepository;
+	private final CompanyService companyService;
 	
-	public CompanyCollector(ResultRepository resultRepository, Connector<?> connector, String apiKey, CompanyRepository companyRepository) {
-		super(resultRepository, connector, apiKey);
-		this.companyRepository = companyRepository;
+	public CompanyCollector(ResultService resultService, Connector<?> connector, String apiKey, CompanyService companyService) {
+		super(resultService, connector, apiKey);
+		this.companyService = companyService;
 	}
 
 	@Override
 	protected void store(FSSCompanyResult result, FinanceGroup financeGroup) {
 		result.getBaseList().stream().forEach(item -> {
-			companyRepository.findByFinanceCompanyNumberAndDisclosureMonth(item.getFin_co_no(), item.getDcls_month())
+			companyService.findByFinanceCompanyNumberAndDisclosureMonth(item.getFin_co_no(), item.getDcls_month())
 			.map(company -> {
 				Company updateCompany = Company.from(item);
 				updateCompany.setFinanceGroup(financeGroup);
 				updateCompany.setId(company.getId());
 				updateCompany.getCompanyOptions().clear();
 				addCompanyOptions(result, updateCompany);
-				return companyRepository.save(updateCompany);
+				return companyService.save(updateCompany);
 			}).orElseGet(() -> {
 				Company company = Company.from(item);
 				company.setFinanceGroup(financeGroup);
 				addCompanyOptions(result, company);
-				return companyRepository.save(company);
+				return companyService.save(company);
 			});
 		});
 	}

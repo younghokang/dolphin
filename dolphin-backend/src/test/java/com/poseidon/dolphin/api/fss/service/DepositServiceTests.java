@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.poseidon.dolphin.api.fss.deposit.Deposit;
 import com.poseidon.dolphin.api.fss.deposit.repository.DepositRepository;
 import com.poseidon.dolphin.api.fss.deposit.service.DepositService;
+import com.poseidon.dolphin.api.fss.deposit.service.DepositServiceImpl;
 
 @RunWith(SpringRunner.class)
 public class DepositServiceTests {
@@ -27,7 +28,7 @@ public class DepositServiceTests {
 	
 	@Before
 	public void setUp() {
-		depositService = new DepositService(depositRepository);
+		depositService = new DepositServiceImpl(depositRepository);
 	}
 	
 	@Test

@@ -120,5 +120,5 @@ public class ProductController {
 		ra.addFlashAttribute("message", "saveSuccess");
 		return "redirect:/simulator/product/list";
 	}
-
+	
 }

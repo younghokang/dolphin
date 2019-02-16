@@ -16,10 +16,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +50,7 @@ import com.poseidon.dolphin.simulator.company.FinanceCompany;
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(indexes= {@Index(columnList="productType"), @Index(columnList="testState")})
 public class Product {
 	public static final long MAX_DEPOSIT_PROTECTION_BALANCE = 50000000l;
 	public static final long DEFAULT_MIN_BALANCE = 100000l;
@@ -446,7 +449,7 @@ public class Product {
 			});
 		
 		p.getProductOptions().addAll(productOptions);
-		p.setTestState(TestState.READY);
+		p.setTestState(TestState.DONE);
 		p.setState(State.OPEN);
 		return p;
 	}
@@ -494,7 +497,7 @@ public class Product {
 			.collect(Collectors.toList());
 		
 		p.getProductOptions().addAll(productOptions);
-		p.setTestState(TestState.READY);
+		p.setTestState(TestState.DONE);
 		p.setState(State.OPEN);
 		return p;
 	}

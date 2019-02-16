@@ -7,33 +7,33 @@ import com.poseidon.dolphin.api.fss.connector.Connector;
 import com.poseidon.dolphin.api.fss.deposit.Deposit;
 import com.poseidon.dolphin.api.fss.deposit.DepositOption;
 import com.poseidon.dolphin.api.fss.deposit.json.FSSDepositResult;
-import com.poseidon.dolphin.api.fss.deposit.repository.DepositRepository;
-import com.poseidon.dolphin.api.fss.result.repository.ResultRepository;
+import com.poseidon.dolphin.api.fss.deposit.service.DepositService;
+import com.poseidon.dolphin.api.fss.result.service.ResultService;
 
 public class DepositCollector extends AbstractCollector<FSSDepositResult> {
-	private final DepositRepository depositRepository;
+	private final DepositService depositService;
 	
-	public DepositCollector(ResultRepository resultRepository, Connector<?> connector, String apiKey, DepositRepository depositRepository) {
-		super(resultRepository, connector, apiKey);
-		this.depositRepository = depositRepository;
+	public DepositCollector(ResultService resultService, Connector<?> connector, String apiKey, DepositService depositService) {
+		super(resultService, connector, apiKey);
+		this.depositService = depositService;
 	}
 
 	@Override
 	protected void store(final FSSDepositResult result, FinanceGroup financeGroup) {
 		result.getBaseList().stream().forEach(item -> {
-			depositRepository.findByFinanceCompanyNumberAndFinanceProductCodeAndDisclosureMonth(item.getFin_co_no(), item.getFin_prdt_cd(), item.getDcls_month())
+			depositService.findByFinanceCompanyNumberAndFinanceProductCodeAndDisclosureMonth(item.getFin_co_no(), item.getFin_prdt_cd(), item.getDcls_month())
 			.map(deposit -> {
 				Deposit updateDeposit = Deposit.from(item);
 				updateDeposit.setFinanceGroup(financeGroup);
 				updateDeposit.setId(deposit.getId());
 				updateDeposit.getDepositOptions().clear();
 				addDepositOptions(result, updateDeposit);
-				return depositRepository.save(updateDeposit);
+				return depositService.save(updateDeposit);
 			}).orElseGet(() -> {
 				Deposit deposit = Deposit.from(item);
 				deposit.setFinanceGroup(financeGroup);
 				addDepositOptions(result, deposit);
-				return depositRepository.save(deposit);
+				return depositService.save(deposit);
 			});
 		});
 	}

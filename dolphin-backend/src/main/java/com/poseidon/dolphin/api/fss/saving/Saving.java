@@ -11,7 +11,6 @@ import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,7 +60,7 @@ public class Saving {
 	private LocalDate disclosureEndDay;
 	private LocalDateTime financeCompanySubmitDay;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection
 	@CollectionTable(name="FSSSavingOptions", joinColumns=@JoinColumn(name="fssSavingId"))
 	private List<SavingOption> savingOptions = new ArrayList<>();
 	public Long getId() {

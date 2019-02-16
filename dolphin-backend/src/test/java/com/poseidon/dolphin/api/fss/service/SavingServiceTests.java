@@ -16,18 +16,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.poseidon.dolphin.api.fss.saving.Saving;
 import com.poseidon.dolphin.api.fss.saving.repository.SavingRepository;
-import com.poseidon.dolphin.api.fss.saving.service.SavingService;
+import com.poseidon.dolphin.api.fss.saving.service.SavingServiceImpl;
 
 @RunWith(SpringRunner.class)
 public class SavingServiceTests {
-	private SavingService savingService;
+	private SavingServiceImpl savingService;
 	
 	@MockBean
 	private SavingRepository savingRepository;
 	
 	@Before
 	public void setUp() {
-		savingService = new SavingService(savingRepository);
+		savingService = new SavingServiceImpl(savingRepository);
 	}
 	
 	@Test

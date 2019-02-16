@@ -1,10 +1,10 @@
 package com.poseidon.dolphin.api.fss.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.anyString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.poseidon.dolphin.api.fss.company.Company;
 import com.poseidon.dolphin.api.fss.company.repository.CompanyRepository;
 import com.poseidon.dolphin.api.fss.company.service.CompanyService;
+import com.poseidon.dolphin.api.fss.company.service.CompanyServiceImpl;
 
 @RunWith(SpringRunner.class)
 public class CompanyServiceTests {
@@ -29,7 +30,7 @@ public class CompanyServiceTests {
 	
 	@Before
 	public void setUp() {
-		companyService = new CompanyService(companyRepository);
+		companyService = new CompanyServiceImpl(companyRepository);
 	}
 	
 	@Test

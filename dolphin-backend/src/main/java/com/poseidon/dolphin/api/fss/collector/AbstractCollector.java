@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 import com.poseidon.dolphin.api.fss.common.FinanceGroup;
 import com.poseidon.dolphin.api.fss.connector.Connector;
 import com.poseidon.dolphin.api.fss.result.Result;
-import com.poseidon.dolphin.api.fss.result.repository.ResultRepository;
+import com.poseidon.dolphin.api.fss.result.service.ResultService;
 
 public abstract class AbstractCollector<T> {
-	private final ResultRepository resultRepository;
+	private final ResultService resultService;
 	private final Connector<?> connector;
 	private final String apiKey;
 	
-	protected AbstractCollector(ResultRepository resultRepository, Connector<?> connector, String apiKey) {
-		this.resultRepository = resultRepository;
+	protected AbstractCollector(ResultService resultService, Connector<?> connector, String apiKey) {
+		this.resultService = resultService;
 		this.connector = connector;
 		this.apiKey = apiKey;
 	}
@@ -28,7 +28,7 @@ public abstract class AbstractCollector<T> {
 			Result resultEntity = Result.from(result);
 			resultEntity.setFinanceGroup(financeGroup);
 			resultEntity.setConnectionTime(connectionTime);
-			resultRepository.save(resultEntity);
+			resultService.save(resultEntity);
 			
 			store(result, financeGroup);
 			

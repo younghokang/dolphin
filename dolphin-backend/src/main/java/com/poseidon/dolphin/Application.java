@@ -11,10 +11,10 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableSpringDataWebSupport
-public class DolphinBackendApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DolphinBackendApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 	
 	@Bean

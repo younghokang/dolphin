@@ -46,19 +46,19 @@
     			<thead class="thead-dark">
     			<tr>
     				<th scope="col">#</th>
-    				<th scope="col">아이디</th>
+    				<th scope="col">회원번호</th>
     				<th scope="col">내용</th>
     				<th scope="col">생성일</th>
-    				<th scope="col">최종 수정일</th>
     			</tr>
     			</thead>
     			<tbody>
     			<tr th:each="comment, commentStat : ${list}">
     				<td th:text="${comment.id}">15</td>
-    				<td th:text="${comment.member.email}">afraid86@gmail.com</td>
+    				<td>
+    					<a class="btn btn-outline-dark" th:href="@{/simulator/member/{id}(id=${comment.member.id})}" th:text="${comment.member.username}">15134134</a>
+    				</td>
     				<td class="text-left" th:text="${comment.contents}">Blah blah...</td>
-    				<td th:text="${#temporals.format(user.createdDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01 15:30:30</td>
-    				<td th:text="${#temporals.format(user.lastModifiedDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01 15:30:30</td>
+    				<td th:text="${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm:ss')}">2019-01-01 15:30:30</td>
     			</tr>
     			</tbody>
     			</table>

@@ -1,8 +1,11 @@
 package com.poseidon.dolphin.simulator.product.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.mockito.BDDMockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.poseidon.dolphin.api.fss.saving.Saving;
 import com.poseidon.dolphin.simulator.company.repository.FinanceCompanyRepository;
 import com.poseidon.dolphin.simulator.product.Product;
+import com.poseidon.dolphin.simulator.product.ProductType;
 import com.poseidon.dolphin.simulator.product.repository.ProductRepository;
 
 @RunWith(SpringRunner.class)
@@ -31,12 +35,12 @@ public class ProductServiceTests {
 	
 	@Before
 	public void setUp() {
-		productService = new ProductService(productRepository, financeCompanyRepository);
+		productService = new ProductServiceImpl(productRepository, financeCompanyRepository);
 	}
 	
 	@Test
 	public void givenCollectionsThenMerge() {
-		given(productRepository.findByCodeAndCompanyNumber(anyString(), anyString())).willReturn(Optional.empty());
+		given(productRepository.findByCodeAndCompanyNumberAndProductType(anyString(), anyString(), any(ProductType.class))).willReturn(Optional.empty());
 		given(financeCompanyRepository.findByCode(anyString())).willReturn(Optional.empty());
 		
 		Product product = new Product();
@@ -49,7 +53,7 @@ public class ProductServiceTests {
 		savings.add(saving);
 		assertThat(productService.mergeToSavings(savings)).isNotEmpty();
 		
-		verify(productRepository, times(1)).findByCodeAndCompanyNumber(anyString(), anyString());
+		verify(productRepository, times(1)).findByCodeAndCompanyNumberAndProductType(anyString(), anyString(), any(ProductType.class));
 		verify(financeCompanyRepository, times(1)).findByCode(anyString());
 		verify(productRepository, times(1)).save(any(Product.class));
 	}

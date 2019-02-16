@@ -1,38 +1,41 @@
 package com.poseidon.dolphin.api.fss.saving.scheduler;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poseidon.dolphin.api.cache.FrontendCacheClient;
 import com.poseidon.dolphin.api.fss.collector.SavingCollector;
 import com.poseidon.dolphin.api.fss.common.FinanceGroup;
 import com.poseidon.dolphin.api.fss.connector.Connector;
 import com.poseidon.dolphin.api.fss.connector.SavingConnector;
 import com.poseidon.dolphin.api.fss.deposit.json.FSSDepositResult;
-import com.poseidon.dolphin.api.fss.result.repository.ResultRepository;
-import com.poseidon.dolphin.api.fss.saving.repository.SavingRepository;
+import com.poseidon.dolphin.api.fss.result.service.ResultService;
 import com.poseidon.dolphin.api.fss.saving.service.SavingService;
+import com.poseidon.dolphin.simulator.product.ProductType;
 import com.poseidon.dolphin.simulator.product.service.ProductService;
 
 @RestController
 public class SavingScheduler {
-	private final ResultRepository resultRepository;
-	private final SavingRepository savingRepository;
+	private final ResultService resultService;
 	private final SavingService savingService;
 	private final ProductService productService;
+	private final FrontendCacheClient cacheClient;
 	private Connector<?> connector = new SavingConnector();
 	public static final String SCHEDULER_CRON = "0 0 10 * * MON-FRI";
 	
 	@Value("${api.fss.key}")
 	private String apiKey;
 	
-	public SavingScheduler(ResultRepository resultRepository, SavingRepository savingRepository, SavingService savingService, ProductService productService) {
-		this.resultRepository = resultRepository;
-		this.savingRepository = savingRepository;
+	public SavingScheduler(ResultService resultService, SavingService savingService, ProductService productService, FrontendCacheClient cacheClient) {
+		this.resultService = resultService;
 		this.savingService = savingService;
 		this.productService = productService;
+		this.cacheClient = cacheClient;
 	}
 
 	public Connector<?> getConnector() {
@@ -50,7 +53,7 @@ public class SavingScheduler {
 	 */
 	@GetMapping("/api/fss/scheduler/saving")
 	public void execute() {
-		SavingCollector collector = new SavingCollector(resultRepository, connector, apiKey, savingRepository);
+		SavingCollector collector = new SavingCollector(resultService, connector, apiKey, savingService);
 		Arrays.stream(FinanceGroup.values()).forEach(financeGroup -> {
 			int pageNo = 1;
 			int maxPageNo = 1;
@@ -64,5 +67,10 @@ public class SavingScheduler {
 		});
 		
 		productService.mergeToSavings(savingService.findAllLatestDisclosureMonth());
+		try {
+			cacheClient.productsCachePut(ProductType.INSTALLMENT_SAVING);
+		} catch (URISyntaxException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
